@@ -1,0 +1,539 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"cdn",
+				"cdn	Bootstrap CSS"
+			],
+			[
+				"co",
+				"CoinDeterminer"
+			],
+			[
+				"arr",
+				"arr	[]"
+			],
+			[
+				"ml",
+				"multsOf3	(num)"
+			],
+			[
+				"A",
+				"ArithGeoII(arr)"
+			],
+			[
+				"has",
+				"hasTriple(num)"
+			],
+			[
+				"to",
+				"toString()"
+			],
+			[
+				"Nu",
+				"NumberSearch(str)"
+			],
+			[
+				"for",
+				"for	for (…) {…}"
+			],
+			[
+				"toU",
+				"toUpperCase()"
+			],
+			[
+				"da",
+				"DashInsertII"
+			],
+			[
+				"fo",
+				"for	for (…) {…}"
+			],
+			[
+				"substr",
+				"substr(from, length?)"
+			],
+			[
+				"F",
+				"FormattedDivision(num1, num2)"
+			],
+			[
+				"String",
+				"StringScramble(str1, str2)"
+			],
+			[
+				"Str",
+				"StringScramble(str1, str2)"
+			],
+			[
+				"char",
+				"charCodeAt(i)"
+			],
+			[
+				"forward",
+				"forwardArray	[]"
+			],
+			[
+				"b",
+				"b	(?)"
+			],
+			[
+				"a",
+				"aStore	(?)"
+			],
+			[
+				"same",
+				"sameNumberOfProperties"
+			],
+			[
+				"i",
+				"i	(num)"
+			],
+			[
+				"count",
+				"storedCount"
+			],
+			[
+				"on",
+				"onclick	(?)"
+			],
+			[
+				"t",
+				"taskIncomplete()"
+			],
+			[
+				"completed",
+				"completedTasksHolder"
+			],
+			[
+				"incomplete",
+				"incompleteTasksHolder"
+			],
+			[
+				"if",
+				"ife	if … else"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "tictactoe.js",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 289,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/User/node.sublime-build",
+	"command_palette":
+	{
+		"height": 400.0,
+		"selected_items":
+		[
+			[
+				"color",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"installp",
+				"Package Control: Install Package"
+			],
+			[
+				"ipack",
+				"Package Control: Install Package"
+			],
+			[
+				"insp",
+				"Package Control: Install Package"
+			],
+			[
+				"packi",
+				"Package Control: Install Package"
+			],
+			[
+				"in",
+				"Package Control: Install Package"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Enable Package"
+			],
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"col",
+				"Colorsublime: Install Theme"
+			],
+			[
+				"Package Control: c",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Disable Package"
+			],
+			[
+				"word",
+				"Word Wrap: Toggle"
+			],
+			[
+				"pol",
+				"Snippet: polymer element"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 583.0
+	},
+	"console":
+	{
+		"height": 126.0,
+		"history":
+		[
+			"myscript.js",
+			"run",
+			"install",
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Users/alexdixon/tictactoe"
+	],
+	"file_history":
+	[
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/HTMLBeautify/HTMLBeautify.sublime-settings",
+		"/Users/alexdixon/.slate",
+		"/Users/alexdixon/Desktop/markup.js",
+		"/Users/alexdixon/freecodecamp/seed_data/challenges.json",
+		"/Users/alexdixon/Desktop/total.js",
+		"/Users/alexdixon/Documents/eloquent-js/eloquent-js-chp5.js",
+		"/Users/alexdixon/Documents/JS-You-Should-Know",
+		"/Users/alexdixon/Documents/coderbyte/overlapping-rectangles.js",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Users/alexdixon/Documents/coderbyte/look-say-sequence.js",
+		"/Users/alexdixon/Documents/coderbyte/coin-determiner.js",
+		"/Users/alexdixon/Documents/coderbyte/number-encoding.js",
+		"/Users/alexdixon/Documents/coderbyte/string-reduction.js",
+		"/Users/alexdixon/Documents/coderbyte/three-five-multiples.js",
+		"/Users/alexdixon/Documents/coderbyte/triple-double.js",
+		"/Users/alexdixon/Documents/coderbyte/arith-geo-ii.js",
+		"/Users/alexdixon/Documents/coderbyte/brakcet-matcher.js",
+		"/Users/alexdixon/Documents/coderbyte/number-search.js",
+		"/Users/alexdixon/learnyounode/program.js",
+		"/Users/alexdixon/Documents/coderbyte/formatted-division.js",
+		"/Users/alexdixon/Documents/coderbyte/permutation-checker",
+		"/Users/alexdixon/Documents/coderbyte/dash-insert-2.js",
+		"/Users/alexdixon/Documents/coderbyte/swap-ii.js",
+		"/Users/alexdixon/Desktop/playground.js",
+		"/Users/alexdixon/Documents/coderbyte/consecutive.js",
+		"/Users/alexdixon/Documents/coderbyte/string-scramble.js",
+		"/Users/alexdixon/Documents/coderbyte/letter-count",
+		"/Users/alexdixon/Documents/coderbyte/letter-count-1.js",
+		"/Users/alexdixon/Documents/coderbyte/mean-mode.js",
+		"/Users/alexdixon/Documents/coderbyte/simple-mode.js",
+		"/Users/alexdixon/Documents/eloquent-js/eloquent-js-chp4.js",
+		"/Users/alexdixon/Documents/coderbyte/caesar-cipher",
+		"/Users/alexdixon/Documents/coderbyte/prime-mover.js",
+		"/Users/alexdixon/Documents/eloquent-js/eloquent-js-chp4-answer",
+		"/Users/alexdixon/Documents/coderbyte/run-length.js",
+		"/Users/alexdixon/Documents/coderbyte/palindrome-two.js",
+		"/Users/alexdixon/Desktop/ancestry.js",
+		"/Users/alexdixon/Documents/coderbyte/prime-time.js",
+		"/Users/alexdixon/Documents/coderbyte/array-addition-1.js",
+		"/Users/alexdixon/node-todo/public/index.html",
+		"/Users/alexdixon/javascript-koans/koans/AboutExpects.js",
+		"/Users/alexdixon/node-todo/server.js",
+		"/Users/alexdixon/node-todo/public/core.js",
+		"/Users/alexdixon/node-todo/package.json",
+		"/Users/alexdixon/expressapp/expressapp/MEAN_MVC_2ndTutorial/config/config.js",
+		"/Users/alexdixon/expressapp/expressapp/MEAN_MVC_2ndTutorial/app/routes/index.server.routes.js",
+		"/Users/alexdixon/expressapp/expressapp/MEAN_MVC_2ndTutorial/app/controllers/index.server.controller.js",
+		"/Users/alexdixon/expressapp/expressapp/MEAN_MVC_2ndTutorial/server.js",
+		"/Users/alexdixon/expressapp/expressapp/MEAN_MVC_2ndTutorial/config/mongoose.js",
+		"/Users/alexdixon/expressapp/expressapp/MEAN_MVC_2ndTutorial/config/env/mongoose.js",
+		"/Users/alexdixon/expressapp/expressapp/MEAN_MVC_2ndTutorial/config/env/development.js",
+		"/Users/alexdixon/dumbexpress/server.js",
+		"/Users/alexdixon/meanjs/gruntfile.js",
+		"/Users/alexdixon/.mongorc.js",
+		"/Users/alexdixon/Documents/angular-tutorial/index.html",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/User/Distraction Free.sublime-settings",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/User/Default (OSX).sublime-keymap",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/Default/Default (OSX).sublime-keymap",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/Default (OSX).sublime-keymap",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/SublimeCodeIntel.sublime-settings",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/User/SublimeCodeIntel.sublime-settings",
+		"/Users/alexdixon/Documents/Javascript The Good Parts/JavaScriptTheGoodParts.js",
+		"/Users/alexdixon/Library/Application Support/Sublime Text 3/Packages/User/node.sublime-build",
+		"/Volumes/alexDixon/Documents/kenneth/index.html",
+		"/Volumes/alexDixon/Documents/southpark/index.html",
+		"/Users/alexdixon/Documents/treehouse/myscript.js",
+		"/Volumes/alexDixon/Documents/lacima/index.html",
+		"/Users/alexdixon/Downloads/materials/m5/after/Index.html",
+		"/Users/alexdixon/Downloads/materials/m5/after/fonts/glyphicons-halflings-regular.svg",
+		"/Users/alexdixon/Downloads/materials/m5/after/css/bootstrap-theme.css",
+		"/Users/alexdixon/Downloads/materials/m5/after/css/bootstrap.css",
+		"/Users/alexdixon/Downloads/materials/m5/after/css/site.css"
+	],
+	"find":
+	{
+		"height": 30.0
+	},
+	"find_in_files":
+	{
+		"height": 102.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"if",
+			".",
+			"\"",
+			".",
+			"\"",
+			"projec",
+			"f19",
+			"pad",
+			"pad1",
+			"${hyper}",
+			"sublime text 3",
+			"c",
+			"samsung",
+			"sublime text 2",
+			"Safari",
+			"iterm",
+			"'",
+			".js",
+			"maria",
+			"fill_ME_IN",
+			"input",
+			"enter",
+			"sm al val",
+			"funky",
+			"x",
+			"hello",
+			"world",
+			"x",
+			"debug",
+			"world",
+			"worl",
+			"world",
+			"bindTaskEvents = function (taskListItem, checkBoxEventHandler)",
+			"<p>",
+			"p",
+			"section",
+			"a",
+			"header",
+			"head",
+			">\n",
+			"dr",
+			"drrrrr",
+			"ipsum"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"f19",
+			"${hyper}"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 1,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "tictactoe.js",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "index.html",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 289,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								258,
+								258
+							]
+						],
+						"settings":
+						{
+							"auto_complete": true,
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 30.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 65.0
+	},
+	"output.find_results":
+	{
+		"height": 95.0
+	},
+	"project": "tictactoe.sublime-project",
+	"replace":
+	{
+		"height": 56.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"bootstrap-theme.css",
+				"css/bootstrap-theme.css"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

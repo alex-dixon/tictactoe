@@ -1,0 +1,37 @@
+html {
+	box-sizing: border-box;
+}
+* {
+	box-sizing: inherit;
+}
+body {
+	background: #fff;
+	color: #ffa;	
+}
+div {
+	padding: 20px;
+	border: 1px solid #ffa;
+	width: 100%;
+	vertical-align: middle;
+	margin: 0 auto;
+	text-align: center;
+}
+.square {
+	width: 70%;
+	height: 500px;
+	border: none;
+	margin: 0 auto;
+	background: #000;
+}
+.container {
+	padding-top: 0;
+	border: 1px dashed blue;
+	width: 50%;
+}
+.col-xs-4 {
+	height: 33.333333333333333333333333333%;
+}
+.xo {
+	text-align: center;
+	line-height: 7.428571;
+}
