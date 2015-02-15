@@ -1,4 +1,4 @@
-var MOVES = 9;	
+var MOVES = 0;	
 var PLAYER_SYMBOL = "";
 var COMP_SYMBOL = "";	
 var BOARD = [
@@ -33,24 +33,33 @@ var win = ['012', '345', '678',	      // 0  1  2
 compMove();
 
 function compMove() {
-	if (MOVES === 9) {
+	if (MOVES === 0) {
 		var choices = [0, 2, 6, 8];
 		var idx = (Math.random( 4 - 0) * 4).toFixed();
 		var choice = choices[idx];
 		$(BOARD[choice]).append("<h2>" + COMP_SYMBOL + "</h2>");
-	} else if (0 < MOVES < 9) {
+	} else if (MOVES === 2) {
 		$(BOARD[4]).append("<h2>" + COMP_SYMBOL + "</h2>");
-		MOVES--;
-		playerMove();
+	} else if (MOVES === 4) {
+		$(BOARD[4]).append("<h2>" + COMP_SYMBOL + "</h2>");
+	} else {
+		console.log(MOVES);
 	}
+	MOVES++;
+	playerMove();
 }
 function playerMove() {
 	$(BOARD.join(', ')).on('click', function() {
 		$(this).append("<h2>" + PLAYER_SYMBOL + "</h2>");
-		MOVES--;
-		if (MOVES > 0) {
+		$(this).unbind();
+		});
+		MOVES++;
+		if (MOVES === 2) {
 			compMove();
 		}
-	});
+		if (MOVES === 4) {
+			compMove();
+		}
+	
 }
 
