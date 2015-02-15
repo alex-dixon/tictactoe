@@ -11,27 +11,67 @@ body {
 div {
 	padding: 20px;
 	border: 1px solid #ffa;
-	width: 100%;
 	vertical-align: middle;
 	margin: 0 auto;
 	text-align: center;
 }
+.container-fluid {
+	padding-top: 0;
+	border: 1px dashed blue;
+	height: 500px;
+}
 .square {
-	width: 70%;
+	width: 500px;
 	height: 500px;
 	border: none;
 	margin: 0 auto;
 	background: #000;
 }
-.container {
-	padding-top: 0;
-	border: 1px dashed blue;
-	width: 50%;
-}
 .col-xs-4 {
 	height: 33.333333333333333333333333333%;
-}
-.xo {
+	display: table-cell;
 	text-align: center;
-	line-height: 7.428571;
+	vertical-align: middle;
+}
+h2 {
+
+}
+#top-left {
+	border-top: none;
+	border-left: none;
+}
+#top-middle {
+	border-top: none;
+}
+#top-right {
+	border-top: none;
+	border-right: none;
+}
+#center-left {
+	border-left: none;
+}
+#center-middle {
+
+}
+#center-right {
+	border-right: none;
+}
+#bottom-left {
+	border-left: none;
+	border-bottom: none;
+}
+#bottom-middle {
+	border-bottom: none;
+}
+#bottom-right {
+	border-right: none;
+	border-bottom: none;
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+	.square {
+		width: 350px;
+		height: 350px;
+	}
 }
