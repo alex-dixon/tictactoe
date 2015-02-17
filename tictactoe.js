@@ -2,7 +2,7 @@ var game = {
 
 	turn: 0,
 	playerIcon: "",
-	computerIcon: "",
+	compIcon: "",
 	
 	init: function() {
 						this.turn = 0;
@@ -22,74 +22,105 @@ var game = {
 		'#bottom-right' 	//8
 	],
 
-	win: ['012', '345', '678',	    	  // 0  1  2
-         	 '036', '147', '258',       // 3  4  5
-           	 	    '048', '642'],      // 6  7  8
+	winners:     ['012', '345', '678',	    // 0  1  2
+         	      '036', '147', '258',      // 3  4  5
+           	 	      '048', '642'],        // 6  7  8
+
+
+  // currentBoard: function () {
+  //   var i = 0;
+  //   var square = game.board[i];
+  //   var icon = $(square).find('h2').text();    
+    function getPositions (icon) {
+      var array = [];
+        for (; i < game.board.length - 1; i++) {
+          if (icon === "X") {
+            array.push(i);
+          }
+        }
+      return array;
+    }
+    getPositions(playerIcon);
+    getPositions(computerIcon);
+  },
+
+
+  // win: function () {
+
+  //     if () {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+
+  // },
 
   changeTurn: function (turn) {
     return turn === 0 ? 1 : 0;
   }, 
 
-  playerMove: function () {
-    $(this.board.join(', ')).on('click', function() {
+  play: function () {
+    var allSquares = this.board.join(', ');
+    $(allSquares).on('click', function () {
     $(this).append('<h2>' + game.playerIcon + '</h2>');
+    changeTurn();
     }
   )}
+  }
+
+  // over: function () {
+  //   return true;
+  // }
+
+
+
+
+  // playerMove: function () {
+  //   var square = this.board.join(', ');
+  //   $(square).on('click', function() {
+  //   $(this).append('<h2>' + game.playerIcon + '</h2>');
+  //   }
+  // )},
+  // computerMove: function () {
+  //   var choices = [0, 2, 6, 8];
+  //   var idx = (Math.random(4) * 4).toFixed();
+  //   var choice = choices[idx];
+  //   $(game.board[choice]).append('<h2>' + game.compIcon + '</h2>');
+  // }
 
 //game
-};
+// };
 game.init();
-game.playerMove();
+// while (!win) {
+game.play();
+// }
+//game.over();
+
+
+
+
+
 
 // if turn 0 comp move
 // if turn 1 player move
 // if win state break loop state winner
 
-/*
+
   // 'checkWin': function() {
   //        currentBoard = currentBoard.sort(function () { return a - b });
 
 
-function turn() {
 
-}
 
-compMove();
-
-function compMove() {
-	if (MOVES === 0) {
-		var choices = [0, 2, 6, 8];
-		var idx = (Math.random( 4 - 0) * 4).toFixed();
-		var choice = choices[idx];
-		$(BOARD[choice]).append("<h2>" + COMP_SYMBOL + "</h2>");
-	} else if (MOVES === 2) {
-		$(BOARD[4]).append("<h2>" + COMP_SYMBOL + "</h2>");
-	} else if (MOVES === 4) {
-		$(BOARD[4]).append("<h2>" + COMP_SYMBOL + "</h2>");
-	} else {
-		console.log(MOVES);
-	}
-	MOVES++;
-	playerMove();
-}
-function playerMove() {
-	$(BOARD.join(', ')).on('click', function() {
-		$(this).append("<h2>" + PLAYER_SYMBOL + "</h2>");
-		// state manager function
-		});
-
-}
-// WTF JQUERY
-$(document).ready(function () {
-	$('#myModal').modal();
-	$('#x').on('click', function () {
-		game.playerIcon = "X";
-		game.compIcon = "O";
-	});
-	$('#o').on('click', function () {
-		game.playerIcon = "O";
-		game.compIcon = "X";
-	});
-});
-
-*/
+// WTF JQUERY????????????????????????
+// $(document).ready(function () {
+// 	$('#myModal').modal();
+// 	$('#x').on('click', function () {
+// 		game.playerIcon = "X";
+// 		game.compIcon = "O";
+// 	});
+// 	$('#o').on('click', function () {
+// 		game.playerIcon = "O";
+// 		game.compIcon = "X";
+// 	});
+// });
