@@ -17,7 +17,7 @@ play: function () {
 	var compWin = game.checkWin(currentPositions, this.winCombo);
 
 	if (compWin) {
-		this.gameOver();
+		//this.gameOver();
 	} else {
 
 		// based on moves made, set available moves
@@ -94,21 +94,20 @@ getPositions: function (icon) {
 checkWin: function(marked, winCombo) {
 	marked = marked.sort(function () { return a - b });
 	marked = marked.join();
-		for (var i = 0; i < winCombo.length; i++) {
-			var win = "/[" + winCombo[i] + "]/";
+		for (var i = 0; i < winCombo.length - 1; i++) {
+			var win = "[" + winCombo[i] + "]";
+			win = new RegExp(win);
 			if (win.test(marked)) {
-				return true;
+				console.log("computer wins");
+				//return true;
 			}
 		}
 }
 
-
 // over: function () {
 //   return true;
 // }
-
-// game object
-};
+}; // game object
 
 game.init();
 // while (!win) {
