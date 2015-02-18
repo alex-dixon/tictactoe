@@ -2,7 +2,7 @@ var game = {
 	turn: 0,
 	playerIcon: "",
 	compIcon: "",
-
+												// TODO. There is no win. Win logs 3 times.
 play: function () {
 	//computer turn
 	var choices = [0, 2, 6, 8];
@@ -17,6 +17,7 @@ play: function () {
 	var compWin = game.checkWin(currentPositions, this.winCombo);
 
 	if (compWin) {
+		console.log('from 20');
 		//this.gameOver();
 	} else {
 
@@ -64,9 +65,29 @@ board: [
 	'#bottom-right' 	//8
 ],
 
-winCombo: ['012', '345', '678',	    // 0  1  2
-          '036', '147', '258',      // 3  4  5
-           	 	'048', '246'],        // 6  7  8
+winCombo: [
+	'012',
+	'345',
+	'678',	    // 0  1  2
+	'036',
+	'147',
+	'258',      // 3  4  5
+	'048',
+	'246'],     // 6  7  8
+
+	// if 0
+			 // check 1 check 2.
+			 // check 3 check 6.
+			 // check 4 check 8.
+	// if 1
+			 // check 4 check 7.
+	// if 2
+			 // check 4 check 6.
+			 // check 5 check 8.
+	// if 3
+			 // check 4 check 5.
+	// if 6
+			 // check 7 check 8.
 
 // returns array of all game.board index that has specified icon
 getPositions: function (icon) {
@@ -90,19 +111,52 @@ getPositions: function (icon) {
 //},
 
 
-// currentPositions(), winCombo
-checkWin: function(marked, winCombo) {
-	marked = marked.sort(function () { return a - b });
-	marked = marked.join();
-		for (var i = 0; i < winCombo.length - 1; i++) {
-			var win = "[" + winCombo[i] + "]";
-			win = new RegExp(win);
-			if (win.test(marked)) {
-				console.log("computer wins");
-				//return true;
+// >> currentPositions()
+checkWin: function(currentBoard) {
+	// sort
+	currentBoard = currentBoard.sort(function (a, b) { return a - b });
+	if (currentBoard.length > 2) {
+		function check(num, array) {
+			array.some(function (a) { return a == num });
+		}
+		// win combo?
+			if (check(0)) {
+				if (check(1)) {
+					if (check(2)) {
+						//win
+					}
+				}
+				if (check(3)) {
+					if (check(6)) {
+						//win
+					}
+				}
+				if (check(4)) {
+					if (check(8)) {
+						//win
+					}
+				}
+			}
+			if(check(1) && check(4) && check(7)) {
+				//win
+			}
+			if (check(2)) {
+				if (check(4) && check(6)) {
+					//win
+				}
+				if (check(5) && check(8)) {
+					//win
+				}
+			}
+			if (check(3) && check(4) && check(5)) {
+				//win
+			}
+			if (check(6) && check(7) && check(8)) {
+				//win
 			}
 		}
-}
+	}
+
 
 // over: function () {
 //   return true;
