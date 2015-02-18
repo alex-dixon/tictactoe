@@ -1,26 +1,40 @@
 var game = {
-
-turn: 0,
-playerIcon: "",
-compIcon: "",
+	turn: 0,
+	playerIcon: "",
+	compIcon: "",
 
 play: function () {
-  var allSquares = this.board.join(', ');
-  $(allSquares).on('click', function () {
-    // player turn
-    $(this).append('<h2>' + game.playerIcon + '</h2>');
-    // check for available moves for comp
+	//computer turn
+	var choices = [0, 2, 6, 8];
+	var idx = (Math.random(4) * 4).toFixed();
+	var choice = choices[idx];
+	$(game.board[choice]).append('<h2>' + game.compIcon + '</h2>');
 
-    //computer turn
-    var choices = [0, 2, 6, 8];
-    var idx = (Math.random(4) * 4).toFixed();
-    var choice = choices[idx];
-    $(game.board[choice]).append('<h2>' + game.compIcon + '</h2>');    
-  });
+	// get comp moves
+	var currentPositions = game.getPositions(game.compIcon);
+
+	// check for comp win
+	var compWin = game.checkWin(currentPositions, this.winCombo);
+
+	if (compWin) {
+		this.gameOver();
+	} else {
+
+		// based on moves made, set available moves
+		// TODO. This means comp needs to check if move is valid before moving.
+		//var currentPositions = game.getPositions(game.compIcon);
+		game.setAvailableMoves(currentPositions, game.board);
+	}
+	// player move
+	var allSquares = this.board.join(', ');
+	$(allSquares).on('click', function () {
+		$(this).append('<h2>' + game.playerIcon + '</h2>');
+	});
 },
 // sets remaining moves by removing last move from board array
 // INPUT >> getPositions(), game.board
-possibleMoves: function (currentPositions, boardIds) {
+
+setAvailableMoves: function (currentPositions, boardIds) {
   // if symbol in game.board array, remove id/"square" from game.board
   for (var i = 0; i < currentPositions.length; i++) {
     for (var j = 0; j < boardIds.length; j++) {
@@ -50,17 +64,17 @@ board: [
 	'#bottom-right' 	//8
 ],
 
-winners: ['012', '345', '678',	    // 0  1  2
+winCombo: ['012', '345', '678',	    // 0  1  2
           '036', '147', '258',      // 3  4  5
            	 	'048', '246'],        // 6  7  8
 
-// return array with game.board index for each symbol
+// returns array of all game.board index that has specified icon
 getPositions: function (icon) {
   var found = [];
   var idx = 0;
-  while( idx < game.board.length) {
-    var x = $(game.board[idx]).find('h2').text()
-    if (x === icon) {
+  while (idx < game.board.length) {
+    var loc = $(game.board[idx]).find('h2').text();
+    if (icon === loc) {
       found.push(idx);
     }
     idx += 1;
@@ -71,19 +85,23 @@ getPositions: function (icon) {
 // getPositions(computerIcon);
 },
 
-changeTurn: function (turn) {
-  return turn === 0 ? 1 : 0;
-}, 
+//changeTurn: function (turn) {
+//  return turn === 0 ? 1 : 0;
+//},
 
-// 'checkWin': function() {
-// currentBoard = currentBoard.sort(function () { return a - b });
-// win: function () {
-//     if () {
-//       return true;
-//     } else {
-//       return false;
-//     }
-// },
+
+// currentPositions(), winCombo
+checkWin: function(marked, winCombo) {
+	marked = marked.sort(function () { return a - b });
+	marked = marked.join();
+		for (var i = 0; i < winCombo.length; i++) {
+			var win = "/[" + winCombo[i] + "]/";
+			if (win.test(marked)) {
+				return true;
+			}
+		}
+}
+
 
 // over: function () {
 //   return true;
@@ -93,7 +111,7 @@ changeTurn: function (turn) {
 };
 
 game.init();
-// // while (!win) {
+// while (!win) {
 game.play();
 // }
 //game.over();
