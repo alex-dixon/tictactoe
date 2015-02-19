@@ -1,187 +1,181 @@
 var game = {
 	turn: 0,
-	playerIcon: "",
-	compIcon: "",
-												// TODO. There is no win. Win logs 3 times.
-play: function () {
-	//computer turn
-	var choices = [0, 2, 6, 8];
-	var idx = (Math.random(4) * 4).toFixed();
-	var choice = choices[idx];
-	$(game.board[choice]).append('<h2>' + game.compIcon + '</h2>');
+	player: "",
+	comp: "",
 
-	// get comp moves
-	var currentPositions = game.getPositions(game.compIcon);
+	init: function() {
+		this.turn = 0;
+		this.player = prompt('X XOR O?');
+		this.comp = this.player === 'X' ? 'O' : 'X';
+	},
+	board: [
+		'#top-left', 			//0
+		'#top-middle', 		//1
+		'#top-right', 		//2
+		'#center-left', 	//3
+		'#center-middle', //4
+		'#center-right', 	//5
+		'#bottom-left', 	//6
+		'#bottom-middle', //7
+		'#bottom-right' 	//8
+	],
 
-	// check for comp win
-	var compWin = game.checkWin(currentPositions, this.winCombo);
+	openSpaces: [
+		'#top-left', 			//0
+		'#top-middle', 		//1
+		'#top-right', 		//2
+		'#center-left', 	//3
+		'#center-middle', //4
+		'#center-right', 	//5
+		'#bottom-left', 	//6
+		'#bottom-middle', //7
+		'#bottom-right' 	//8
+	],
 
-	if (compWin) {
-		console.log('from 20');
-		//this.gameOver();
-	} else {
+	playerTurn: function () {
+		var allSquares = this.openSpaces.join(', ');
+		$(allSquares).one('click', function () {
+			$(this).append('<h2>' + game.player + '</h2>');
+			game.setOpenSpaces(game.playerMarks, game.openSpaces);
+			game.compTurn();
+		});
 
-		// based on moves made, set available moves
-		// TODO. This means comp needs to check if move is valid before moving.
-		//var currentPositions = game.getPositions(game.compIcon);
-		game.setAvailableMoves(currentPositions, game.board);
-	}
-	// player move
-	var allSquares = this.board.join(', ');
-	$(allSquares).on('click', function () {
-		$(this).append('<h2>' + game.playerIcon + '</h2>');
-	});
-},
-// sets remaining moves by removing last move from board array
-// INPUT >> getPositions(), game.board
+	},
 
-setAvailableMoves: function (currentPositions, boardIds) {
-  // if symbol in game.board array, remove id/"square" from game.board
-  for (var i = 0; i < currentPositions.length; i++) {
-    for (var j = 0; j < boardIds.length; j++) {
-      if (currentPositions[i] === j) {
-        boardIds.splice(j, 1);
-      }
-    }
-  }
-  return boardIds;
-},
-	
-init: function() {
-	this.turn = 0;
-	this.playerIcon = prompt('X XOR O?');
-	this.compIcon = this.playerIcon === 'X' ? 'O' : 'X';
-},
-	
-board: [
-	'#top-left', 			//0
-	'#top-middle', 		//1
-	'#top-right', 		//2
-	'#center-left', 	//3
-	'#center-middle', //4
-	'#center-right', 	//5
-	'#bottom-left', 	//6
-	'#bottom-middle', //7
-	'#bottom-right' 	//8
-],
+	compTurn: function () {
+		//var choices = [0, 2, 6, 8];
+		var idx = Math.floor((Math.random() * game.openSpaces.length));
+		//var choice = choices[idx];
 
-winCombo: [
-	'012',
-	'345',
-	'678',	    // 0  1  2
-	'036',
-	'147',
-	'258',      // 3  4  5
-	'048',
-	'246'],     // 6  7  8
+		$(game.openSpaces[idx]).append('<h2>' + game.comp + '</h2>');
 
-	// if 0
-			 // check 1 check 2.
-			 // check 3 check 6.
-			 // check 4 check 8.
-	// if 1
-			 // check 4 check 7.
-	// if 2
-			 // check 4 check 6.
-			 // check 5 check 8.
-	// if 3
-			 // check 4 check 5.
-	// if 6
-			 // check 7 check 8.
+		//// get comp moves
+		var compMarks = game.marks(game.comp);
+		//if (compMarks.length > 0) {
+		//	// check for comp win
+		//	var compWin = game.checkWin(game.comp, compMarks);
+		//}
+		//if (compWin) {
+		//	console.log('compWin');
+		//	//this.gameOver();
+		//} else {
+		//	console.log('line65');
+		//	// set available moves after comp turn
+			game.board = game.setOpenSpaces(compMarks, game.openSpaces);
+		//}
+	},
 
-// returns array of all game.board index that has specified icon
-getPositions: function (icon) {
-  var found = [];
-  var idx = 0;
-  while (idx < game.board.length) {
-    var loc = $(game.board[idx]).find('h2').text();
-    if (icon === loc) {
-      found.push(idx);
-    }
-    idx += 1;
-  }
-  return found;
-// }
-// getPositions(playerIcon);
-// getPositions(computerIcon);
-},
-
-//changeTurn: function (turn) {
-//  return turn === 0 ? 1 : 0;
-//},
-
-
-// >> currentPositions()
-checkWin: function(currentBoard) {
-	// sort
-	currentBoard = currentBoard.sort(function (a, b) { return a - b });
-	if (currentBoard.length > 2) {
-		function check(num, array) {
-			array.some(function (a) { return a == num });
+	setOpenSpaces: function (currentPositions, boardIds) {
+		// if symbol in game.board array, remove id/"square" from game.board
+		for (var i = 0; i < currentPositions.length; i++) {
+			for (var j = 0; j < boardIds.length; j++) {
+				if (currentPositions[i] === j) {
+					boardIds.splice(j, 1);
+				}
+			}
 		}
+		return boardIds;
+	},
+	// returns array of all game.board index that has specified icon
+	marks: function (icon) {
+		var positions = [];
+		var loc;
+		for (var i = 0; i < game.board.length; i++) {
+			//var loc = $(game.board[i]).find('h2').text();
+			if ( icon === $(game.board[i]).find('h2').text() ) {
+				positions.push(i);
+			}
+		}
+		return positions;
+	},
+
+	// sets remaining moves by removing last move from board array
+	// INPUT >> marks(), game.board
+
+	// check for player win
+	//	if (playerMarks.length > 0) {
+	//		var playerWin = game.checkWin(playerMarks);
+	//	}
+	//	if (playerWin) {
+	//		console.log(playerWin);
+	//	} else {
+	//		// set available moves after player turn
+	//		game.setOpenSpaces(playerMarks, game.board);
+	//	}
+	//},
+
+	// player positions
+	playerMarks: function() {
+		return game.marks(game.player)
+	},
+
+
+	// >> currentPositions();
+	checkWin: function (currentBoard) {
+		var check = function (num) {
+			currentBoard.some(function (elem) { return elem === num })
+		};
+	// sort
+	//currentBoard = currentBoard.sort(function (a, b) { return a < b });
+		if (currentBoard.length > 2) {
+
 		// win combo?
 			if (check(0)) {
 				if (check(1)) {
 					if (check(2)) {
-						//win
+						console.log('win');
 					}
 				}
 				if (check(3)) {
 					if (check(6)) {
-						//win
+						console.log('win');
 					}
 				}
 				if (check(4)) {
 					if (check(8)) {
-						//win
+						console.log('win');
 					}
 				}
 			}
-			if(check(1) && check(4) && check(7)) {
-				//win
+			if (check(1) && check(4) && check(7)) {
+				console.log('win');
 			}
 			if (check(2)) {
 				if (check(4) && check(6)) {
-					//win
+					console.log('win');
 				}
 				if (check(5) && check(8)) {
-					//win
+					console.log('win');
 				}
 			}
 			if (check(3) && check(4) && check(5)) {
-				//win
+				console.log('win');
 			}
 			if (check(6) && check(7) && check(8)) {
-				//win
+				console.log('win');
 			}
+
 		}
 	}
-
-
-// over: function () {
-//   return true;
-// }
 }; // game object
 
 game.init();
-// while (!win) {
-game.play();
-// }
-//game.over();
+	// while (!win) {
+game.compTurn();
+game.playerTurn();
+	// }
+	//game.over();
 
 
-
-
-
-// WTF JQUERY????????????????????????
+// jQuery that I can't get to play nice
 // $(document).ready(function () {
 // 	$('#myModal').modal();
 // 	$('#x').on('click', function () {
-// 		game.playerIcon = "X";
-// 		game.compIcon = "O";
+// 		game.player = "X";
+// 		game.comp = "O";
 // 	});
 // 	$('#o').on('click', function () {
-// 		game.playerIcon = "O";
-// 		game.compIcon = "X";
+// 		game.player = "O";
+// 		game.comp = "X";
 // 	});
 // });
