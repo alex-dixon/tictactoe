@@ -1,13 +1,16 @@
 var game = {
+
 	turn: 0,
-	player: "",
-	comp: "",
+	player: '',
+	comp: '',
+	prevMove: '',
 
 	init: function() {
 		this.turn = 0;
 		this.player = prompt('X XOR O?');
 		this.comp = this.player === 'X' ? 'O' : 'X';
 	},
+
 	board: [
 		'#top-left', 			//0
 		'#top-middle', 		//1
@@ -32,25 +35,39 @@ var game = {
 		'#bottom-right' 	//8
 	],
 
+
 	playerTurn: function () {
 		var allSquares = this.openSpaces.join(', ');
 		$(allSquares).one('click', function () {
 			$(this).append('<h2>' + game.player + '</h2>');
-			game.setOpenSpaces(game.playerMarks, game.openSpaces);
-			game.compTurn();
+			game.prevMove = '#' + $(this).attr('id');
+			//var playerMarks = game.marks(game.player);
+			//game.openSpaces = game.disableSpace(playerMarks, game.openSpaces);
+			if (game.openSpaces.length > 0) {
+				game.compTurn();
+			} else {
+				game.over();
+			}
 		});
+	},
 
+	over: function() {
+		console.log('game over');
 	},
 
 	compTurn: function () {
-		//var choices = [0, 2, 6, 8];
+		//var playerMarks = game.marks(game.player);
+
+		game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
 		var idx = Math.floor((Math.random() * game.openSpaces.length));
-		//var choice = choices[idx];
-
+		// draw letter to view
 		$(game.openSpaces[idx]).append('<h2>' + game.comp + '</h2>');
-
-		//// get comp moves
-		var compMarks = game.marks(game.comp);
+		// set prevMove to last move
+		game.prevMove = '#' + $(game.openSpaces[idx]).attr('id');
+		// remove lastMove from openSpaces
+		game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
+		//
+		//var compMarks = game.marks(game.comp);
 		//if (compMarks.length > 0) {
 		//	// check for comp win
 		//	var compWin = game.checkWin(game.comp, compMarks);
@@ -61,32 +78,40 @@ var game = {
 		//} else {
 		//	console.log('line65');
 		//	// set available moves after comp turn
-			game.board = game.setOpenSpaces(compMarks, game.openSpaces);
+
+		//if (game.openSpaces.length > 0) {
+		//	game.playerTurn();
+		//} else {
+		//	game.over();
+		//}
 		//}
 	},
-
-	setOpenSpaces: function (currentPositions, boardIds) {
-		// if symbol in game.board array, remove id/"square" from game.board
-		for (var i = 0; i < currentPositions.length; i++) {
-			for (var j = 0; j < boardIds.length; j++) {
-				if (currentPositions[i] === j) {
-					boardIds.splice(j, 1);
-				}
+	//TODO. Debug disableSpace(). Check parameters and loops.
+	//resets openSpaces array based on where marks(computer or player) exist
+	//marks should be one value to remove so that only one space is removed per turn,
+	// instead of all moves made by player or computer like it is now
+	//prevMove needs to be content/idname, not idx
+	disableSpace: function disableSpace (lastMove, remaining) {
+		remaining = remaining || this.openSpaces;
+		for (var i = 0; i < remaining.length; i++) {
+			if (remaining[i] === lastMove) {
+				remaining.splice(i, 1);
 			}
 		}
-		return boardIds;
+		return remaining;
 	},
+
 	// returns array of all game.board index that has specified icon
-	marks: function (icon) {
-		var positions = [];
+	marks: function marks (icon) {
+		var played = [];
 		var loc;
-		for (var i = 0; i < game.board.length; i++) {
+		for (var i = 0; i < game.board.length - 1; i++) {
 			//var loc = $(game.board[i]).find('h2').text();
 			if ( icon === $(game.board[i]).find('h2').text() ) {
-				positions.push(i);
+				played.push(i);
 			}
 		}
-		return positions;
+		return played;
 	},
 
 	// sets remaining moves by removing last move from board array
@@ -100,14 +125,14 @@ var game = {
 	//		console.log(playerWin);
 	//	} else {
 	//		// set available moves after player turn
-	//		game.setOpenSpaces(playerMarks, game.board);
+	//		game.disableSpace(playerMarks, game.board);
 	//	}
 	//},
 
-	// player positions
-	playerMarks: function() {
-		return game.marks(game.player)
-	},
+	//// player positions
+	//playerMarks: function() {
+	//	return game.marks(game.player)
+	//},
 
 
 	// >> currentPositions();
@@ -161,8 +186,8 @@ var game = {
 
 game.init();
 	// while (!win) {
-game.compTurn();
-game.playerTurn();
+//game.compTurn();
+//game.playerTurn();
 	// }
 	//game.over();
 
