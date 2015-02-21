@@ -1,8 +1,6 @@
 //TODO. 1. Comp doesn't move first
 //TODO. 2. Player can click on a comp move and move
-
-//TODO. 4. game.init() should reset the game, or game.reset() should do this
-
+//TODO. 3. game.init() should reset the game, or game.reset() should do this
 
 var game = {
 
@@ -84,23 +82,8 @@ var game = {
 		if (compWin) {
 			console.log('compWin');
 		}
-		//	//this.gameOver();
-		//} else {
-		//	console.log('line65');
-		//	// set available moves after comp turn
-
-		//if (game.openSpaces.length > 0) {
-		//	game.playerTurn();
-		//} else {
-		//	game.over();
-		//}
-		//}
 	},
-	//TODO. Debug disableSpace(). Check parameters and loops.
-	//resets openSpaces array based on where marks(computer or player) exist
-	//marks should be one value to remove so that only one space is removed per turn,
-	// instead of all moves made by player or computer like it is now
-	//prevMove needs to be content/idname, not idx
+
 	disableSpace: function disableSpace (lastMove, remaining) {
 		remaining = remaining || this.openSpaces;
 		for (var i = 0; i < remaining.length; i++) {
@@ -111,12 +94,10 @@ var game = {
 		return remaining;
 	},
 
-	// returns array showing where all player or comp marks are
+	// Returns array showing where all player or comp marks are.
 	marks: function marks (icon) {
 		var played = [];
-		var loc;
 		for (var i = 0; i < game.board.length; i++) {
-			//var loc = $(game.board[i]).find('h2').text();
 			if ( icon === $(game.board[i]).find('h2').text() ) {
 				played.push(i);
 			}
@@ -124,69 +105,52 @@ var game = {
 		return played;
 	},
 
-	// sets remaining moves by removing last move from board array
-	// INPUT >> marks(), game.board
-
-	// check for player win
-	//	if (playerMarks.length > 0) {
-	//		var playerWin = game.checkWin(playerMarks);
-	//	}
-	//	if (playerWin) {
-	//		console.log(playerWin);
-	//	} else {
-	//		// set available moves after player turn
-	//		game.disableSpace(playerMarks, game.board);
-	//	}
-	//},
-
-	//// player positions
-	//playerMarks: function() {
-	//	return game.marks(game.player)
-	//},
-
-
-	// >> currentPositions();
 	checkWin: function checkWin (moves) {
-		//var check = function (testNum) {
-		//	moves.some(function (elem) { return elem === testNum });
-		//};
-	// sort
-	//moves = moves.sort(function (a, b) { return a < b });
+
+		function makeCheck (moves) {
+			return function (input) {
+				return moves.some(function (element) {
+						return element === input;
+				});
+			};
+		}
+		var check = makeCheck(moves);
+
 		if (moves.length > 2) {
 
 		// win combo?
-			if (moves.check(0)) {
-				if (moves.check(1)) {
-					if (moves.check(2)) {
+			if (check(0)) {
+				if (check(1)) {
+					if (check(2)) {
 						console.log('win');
 					}
 				}
-				if (moves.check(3)) {
-					if (moves.check(6)) {
+				if (check(3)) {
+					if (check(6)) {
 						console.log('win');
 					}
 				}
-				if (moves.check(4)) {
-					if (moves.check(8)) {
+				if (check(4)) {
+					if (check(8)) {
 						console.log('win');
 					}
 				}
 			}
-			if (moves.check(1) && moves.check(4) && moves.check(7)) {
+			if (check(1) && check(4) && check(7)) {
 				console.log('win');
 			}
-			if (moves.check(2)) {
-				if (moves.check(4) && moves.check(6)) {
+			if (check(2)) {
+				if (check(4) && check(6)) {
 					console.log('win');
 				}
-				if (moves.check(5) && moves.check(8)) {
+				if (check(5) && check(8)) {
 					console.log('win');
 				}
 			}
-			if (moves.check(3) && moves.check(4) && moves.check(5)) {
+			if (check(3) && check(4) && check(5)) {
 				console.log('win');
 			}
-			if (moves.check(6) && moves.check(7) && moves.check(8)) {
+			if (check(6) && check(7) && check(8)) {
 				console.log('win');
 			}
 
@@ -195,17 +159,13 @@ var game = {
 }; // game object
 
 game.init();
-	// while (!win) {
-//game.compTurn();
 game.playerTurn();
-	// }
-	//game.over();
 
-Array.prototype.check = function(e) {
-	return this.some(function(a) {
-		return a === e;
-	});
-};
+//Array.prototype.check = function(e) {
+//	return this.some(function(a) {
+//		return a === e;
+//	});
+//};
 
 // jQuery that I can't get to play nice
 // $(document).ready(function () {
