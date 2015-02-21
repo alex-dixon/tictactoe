@@ -1,7 +1,8 @@
-//TODO. 1. game.init() should reset the game
-//TODO.    1. remove all h2 elements from html to clear the board
+//TODO. 1. Prompt player for another game after game ends
 //TODO. 2. playerTurn and compTurn should be able to be combined and called from game.init so that only init needs to be invoked for the game to run.
 //TODO. 3. A tie currently logs 'game over' to the console instead of showing a picture of a cat.
+//TODO. 4. Easy, medium, and hard difficulty levels
+//TODO. 5. Modals instead of prompts
 
 var game = {
 
@@ -49,7 +50,7 @@ var game = {
 	},
 
 	playerTurn: function playerTurn () {
-		// allow click on any free square
+		// when a free square is clicked, draw X or O, disable click functionality
 		var allSquares = this.freeMoves.join(', ');
 		$(allSquares).one('click', function () {
 			$(this).append('<h2>' + game.player + '</h2>');
@@ -66,7 +67,7 @@ var game = {
 			var playerWin = game.checkWin(playerMoves);
 
 			if (playerWin) {
-				console.log('Player wins!');
+				game.over('player wins');
 			} else if (game.freeMoves.length > 0) {
 				game.move = game.move || true;
 				game.compTurn();
@@ -91,9 +92,9 @@ var game = {
 			var compWin = game.checkWin(compMarks);
 		}
 		if (compWin) {
-			console.log('compWin');
+			game.over('computer wins');
 		} else if (game.freeMoves.length === 0) {
-			console.log('Meow');
+			game.over('tie');
 		} else {
 			game.playerTurn();
 		}
@@ -135,55 +136,57 @@ var game = {
 			if (check(0)) {
 				if (check(1)) {
 					if (check(2)) {
-						console.log('win');
 						return true;
 					}
 				}
 				if (check(3)) {
 					if (check(6)) {
-						console.log('win');
 						return true;
 					}
 				}
 				if (check(4)) {
 					if (check(8)) {
-						console.log('win');
 						return true;
 					}
 				}
 			}
 			if (check(1) && check(4) && check(7)) {
-				console.log('win');
 				return true;
 			}
 			if (check(2)) {
 				if (check(4) && check(6)) {
-					console.log('win');
 					return true;
 				}
 				if (check(5) && check(8)) {
-					console.log('win');
 					return true;
 				}
 			}
 			if (check(3) && check(4) && check(5)) {
-				console.log('win');
 				return true;
 			}
 			if (check(6) && check(7) && check(8)) {
-				console.log('win');
 				return true;
 			}
 		}
 	},
 
-	over: function over () {
-		console.log('game over');
+	over: function over (type) {
+		if (type === 'player wins') {
+			console.log('from game.over, player wins');
+		} else if (type === 'computer wins') {
+			console.log('from game.over, computer wins');
+		} else if (type === 'tie') {
+			console.log('from game.over, tie');
+		}
+		if ( window.confirm('Play again?') ) {
+			game.init();
+		} else {
+			console.log('That is all.');
+		}
 	}
 
 }; // game object
 game.init();
-//game.compTurn();
 
 //Array.prototype.check = function(e) {
 //	return this.some(function(a) {
