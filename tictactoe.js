@@ -1,11 +1,13 @@
 //TODO. 1. Comp doesn't move first
 //TODO. 2. Run playerTurn() after every comp turn
-//TODO. 3. game.init() should reset the game, or game.reset() should do this
+//TODO. 3. game.init() should reset the game
 //TODO. 4. Win should stop the game.
+//TODO. 5. playerTurn and compTurn should be able to be combined and called from game.init so that only init needs to be invoked for the game to run.
+//TODO. 6. A tie currently logs 'game over' to the console instead of showing a picture of a cat.
 
 var game = {
 
-	turn: 0,
+	turn: false,
 	player: '',
 	comp: '',
 	prevMove: '',
@@ -22,7 +24,7 @@ var game = {
 		'#bottom-right' 	//8
 	],
 
-	openSpaces: [
+	freeMoves: [
 		'#top-left', 			//0
 		'#top-middle', 		//1
 		'#top-right', 		//2
@@ -40,19 +42,27 @@ var game = {
 		this.comp = this.player === 'X' ? 'O' : 'X';
 	},
 
-
 	playerTurn: function playerTurn () {
-
-		var allSquares = this.openSpaces.join(', ');
-
+		// allow click on any free square
+		var allSquares = this.freeMoves.join(', ');
 		$(allSquares).one('click', function () {
 			$(this).append('<h2>' + game.player + '</h2>');
 			$(allSquares).off('click');
 			game.prevMove = '#' + $(this).attr('id');
 
-			game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
+			//update freeMoves after player moves
+			game.freeMoves = game.disableSpace(game.prevMove, game.freeMoves);
 
-			if (game.openSpaces.length > 0) {
+			// get all player moves
+			var playerMoves = game.marks(game.player);
+
+			// check them for winning combo
+			var playerWin = game.checkWin(playerMoves);
+
+			if (playerWin) {
+				console.log('Player wins!');
+			} else if (game.freeMoves.length > 0) {
+				game.move = game.move || true;
 				game.compTurn();
 			} else {
 				game.over();
@@ -60,24 +70,14 @@ var game = {
 		});
 	},
 
-	over: function over () {
-		console.log('game over');
-	},
-
 	compTurn: function compTurn () {
-		// get all player moves
-		var playerMoves = game.marks(game.player);
-		// check player win
-		var playerWin = game.checkWin(playerMoves);
-		// set avail spaces after player moves
-		//game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
-		var idx = Math.floor((Math.random() * game.openSpaces.length));
+		var idx = Math.floor((Math.random() * game.freeMoves.length));
 		// draw letter to view
-		$(game.openSpaces[idx]).append('<h2>' + game.comp + '</h2>');
+		$(game.freeMoves[idx]).append('<h2>' + game.comp + '</h2>');
 		// set prevMove to last move
-		game.prevMove = '#' + $(game.openSpaces[idx]).attr('id');
-		// remove lastMove from openSpaces
-		game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
+		game.prevMove = '#' + $(game.freeMoves[idx]).attr('id');
+		// remove lastMove from freeMoves
+		game.freeMoves = game.disableSpace(game.prevMove, game.freeMoves);
 		// get all comp moves to check if comp win
 		var compMarks = game.marks(game.comp);
 		if (compMarks.length > 0) {
@@ -86,11 +86,15 @@ var game = {
 		}
 		if (compWin) {
 			console.log('compWin');
+		} else if (game.freeMoves.length === 0) {
+			console.log('Meow');
+		} else {
+			game.playerTurn();
 		}
 	},
 
 	disableSpace: function disableSpace (lastMove, remaining) {
-		remaining = remaining || this.openSpaces;
+		remaining = remaining || this.freeMoves;
 		for (var i = 0; i < remaining.length; i++) {
 			if (remaining[i] === lastMove) {
 				remaining.splice(i, 1);
@@ -111,7 +115,6 @@ var game = {
 	},
 
 	checkWin: function checkWin (moves) {
-
 		function makeCheck (moves) {
 			return function (input) {
 				return moves.some(function (element) {
@@ -121,50 +124,60 @@ var game = {
 		}
 		var check = makeCheck(moves);
 
-		if (moves.length > 2) {
-
 		// win combo?
+		if (moves.length > 2) {
 			if (check(0)) {
 				if (check(1)) {
 					if (check(2)) {
 						console.log('win');
+						return true;
 					}
 				}
 				if (check(3)) {
 					if (check(6)) {
 						console.log('win');
+						return true;
 					}
 				}
 				if (check(4)) {
 					if (check(8)) {
 						console.log('win');
+						return true;
 					}
 				}
 			}
 			if (check(1) && check(4) && check(7)) {
 				console.log('win');
+				return true;
 			}
 			if (check(2)) {
 				if (check(4) && check(6)) {
 					console.log('win');
+					return true;
 				}
 				if (check(5) && check(8)) {
 					console.log('win');
+					return true;
 				}
 			}
 			if (check(3) && check(4) && check(5)) {
 				console.log('win');
+				return true;
 			}
 			if (check(6) && check(7) && check(8)) {
 				console.log('win');
+				return true;
 			}
-
 		}
-	}
-}; // game object
+	},
 
+	over: function over () {
+		console.log('game over');
+	}
+
+}; // game object
 game.init();
-game.playerTurn();
+game.compTurn();
 
 //Array.prototype.check = function(e) {
 //	return this.some(function(a) {
