@@ -1,13 +1,11 @@
-//TODO. 1. Comp doesn't move first
-//TODO. 2. Run playerTurn() after every comp turn
-//TODO. 3. game.init() should reset the game
-//TODO. 4. Win should stop the game.
-//TODO. 5. playerTurn and compTurn should be able to be combined and called from game.init so that only init needs to be invoked for the game to run.
-//TODO. 6. A tie currently logs 'game over' to the console instead of showing a picture of a cat.
+//TODO. 1. game.init() should reset the game
+//TODO.    1. remove all h2 elements from html to clear the board
+//TODO. 2. playerTurn and compTurn should be able to be combined and called from game.init so that only init needs to be invoked for the game to run.
+//TODO. 3. A tie currently logs 'game over' to the console instead of showing a picture of a cat.
 
 var game = {
 
-	turn: false,
+	turn: 0,
 	player: '',
 	comp: '',
 	prevMove: '',
@@ -37,9 +35,17 @@ var game = {
 	],
 
 	init: function init () {
+		$('h2').remove();
 		this.turn = 0;
 		this.player = prompt('X XOR O?');
 		this.comp = this.player === 'X' ? 'O' : 'X';
+		(function setBoard () {
+			game.freeMoves = [];
+			for (var i = 0; i < game.board.length; i++) {
+				game.freeMoves.push(game.board[i]);
+			}
+		})();
+		game.compTurn();
 	},
 
 	playerTurn: function playerTurn () {
@@ -177,7 +183,7 @@ var game = {
 
 }; // game object
 game.init();
-game.compTurn();
+//game.compTurn();
 
 //Array.prototype.check = function(e) {
 //	return this.some(function(a) {
