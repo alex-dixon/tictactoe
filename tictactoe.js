@@ -1,6 +1,7 @@
 //TODO. 1. Comp doesn't move first
-//TODO. 2. Player can click on a comp move and move
+//TODO. 2. Run playerTurn() after every comp turn
 //TODO. 3. game.init() should reset the game, or game.reset() should do this
+//TODO. 4. Win should stop the game.
 
 var game = {
 
@@ -41,12 +42,16 @@ var game = {
 
 
 	playerTurn: function playerTurn () {
+
 		var allSquares = this.openSpaces.join(', ');
+
 		$(allSquares).one('click', function () {
 			$(this).append('<h2>' + game.player + '</h2>');
+			$(allSquares).off('click');
 			game.prevMove = '#' + $(this).attr('id');
-			var playerMarks = game.marks(game.player);
-			//game.openSpaces = game.disableSpace(playerMarks, game.openSpaces);
+
+			game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
+
 			if (game.openSpaces.length > 0) {
 				game.compTurn();
 			} else {
@@ -65,7 +70,7 @@ var game = {
 		// check player win
 		var playerWin = game.checkWin(playerMoves);
 		// set avail spaces after player moves
-		game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
+		//game.openSpaces = game.disableSpace(game.prevMove, game.openSpaces);
 		var idx = Math.floor((Math.random() * game.openSpaces.length));
 		// draw letter to view
 		$(game.openSpaces[idx]).append('<h2>' + game.comp + '</h2>');
