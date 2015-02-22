@@ -4,6 +4,7 @@
 //TODO. 4. Easy, medium, and hard difficulty levels
 //TODO. 5. Modals instead of prompts
 
+
 var game = {
 
 	turn: 0,
@@ -38,15 +39,42 @@ var game = {
 	init: function init () {
 		$('h2').remove();
 		this.turn = 0;
-		this.player = prompt('X XOR O?');
-		this.comp = this.player === 'X' ? 'O' : 'X';
+
 		(function setBoard () {
 			game.freeMoves = [];
 			for (var i = 0; i < game.board.length; i++) {
 				game.freeMoves.push(game.board[i]);
 			}
 		})();
-		game.compTurn();
+
+		(function chooseXO (question) {
+			question = question || 'X XOR O?';
+
+			$('#iconModal').modal({show:true,
+				backdrop:false,
+				keyboard: false
+			});
+
+			$('#question').html(question);
+			$('#leftButton').one('click', function () {
+				if (question === 'X XOR O?') {
+					game.player = 'X';
+					game.comp = game.player === 'X' ? 'O' : 'X';
+				}
+				$('#rightButton').off('click');
+				$('#iconModal').modal('hide');
+				game.compTurn();
+			});
+			$('#rightButton').one('click', function () {
+				if (question === 'X XOR O?') {
+					game.player = 'O';
+					game.comp = game.player === 'X' ? 'O' : 'X';
+				}
+				$('#rightButton').off('click');
+				$('#iconModal').modal('hide');
+				game.compTurn();
+			});
+		})();
 	},
 
 	playerTurn: function playerTurn () {
@@ -193,16 +221,3 @@ game.init();
 //		return a === e;
 //	});
 //};
-
-// jQuery that I can't get to play nice
-// $(document).ready(function () {
-// 	$('#myModal').modal();
-// 	$('#x').on('click', function () {
-// 		game.player = "X";
-// 		game.comp = "O";
-// 	});
-// 	$('#o').on('click', function () {
-// 		game.player = "O";
-// 		game.comp = "X";
-// 	});
-// });

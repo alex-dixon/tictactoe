@@ -68,6 +68,22 @@ h2 {
 	border-right: none;
 	border-bottom: none;
 }
+.modal-header,.modal-body {
+    background: #000;
+    border: 1px solid #ffa;
+    color: #fff;
+}
+.modal-dialog {
+    border: transparent;
+}
+.modal-footer {
+    text-align: center;
+    border: transparent;
+}
+.btn {
+    font-size: 3em;
+    font-weight: 800;
+}
 
 /* Mobile */
 @media (max-width: 480px) {
