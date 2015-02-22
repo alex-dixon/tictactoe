@@ -1,13 +1,14 @@
-//TODO. 1. Prompt player for another game after game ends
-//TODO. 2. playerTurn and compTurn should be able to be combined and called from game.init so that only init needs to be invoked for the game to run.
-//TODO. 3. A tie currently logs 'game over' to the console instead of showing a picture of a cat.
-//TODO. 4. Easy, medium, and hard difficulty levels
-//TODO. 5. Modals instead of prompts
+//TODO. 1. Modal instead of prompt for another game after game ends
+//TODO. 2. A tie logs 'game over' to the console but does not show a picture of a cat.
+//TODO. 3. Add easy, medium, and hard difficulty levels
+//TODO. 4. Can't see the moves at game end if modal pops up
+//TODO. 5. Draw a line through the winning combo
+
 
 
 var game = {
 
-	turn: 0,
+	gameNum: 0,
 	player: '',
 	comp: '',
 	prevMove: '',
@@ -38,7 +39,7 @@ var game = {
 
 	init: function init () {
 		$('h2').remove();
-		this.turn = 0;
+		game.gameNum++;
 
 		(function setBoard () {
 			game.freeMoves = [];
@@ -47,34 +48,41 @@ var game = {
 			}
 		})();
 
-		(function chooseXO (question) {
-			question = question || 'X XOR O?';
+		if ( !(game.gameNum > 1) ) {
+			(function chooseXO(question) {
+				question = question || 'X XOR O?';
 
-			$('#iconModal').modal({show:true,
-				backdrop:false,
-				keyboard: false
-			});
+				$('#iconModal').modal({
+					show: true,
+					backdrop: true,
+					keyboard: false
+				});
 
-			$('#question').html(question);
-			$('#leftButton').one('click', function () {
-				if (question === 'X XOR O?') {
-					game.player = 'X';
-					game.comp = game.player === 'X' ? 'O' : 'X';
-				}
-				$('#rightButton').off('click');
-				$('#iconModal').modal('hide');
+				$('#question').html(question);
+				$('#leftButton').one('click', function () {
+					if (question === 'X XOR O?') {
+						game.player = 'X';
+						game.comp = game.player === 'X' ? 'O' : 'X';
+					}
+					$('#rightButton').off('click');
+					$('#iconModal').modal('hide');
+					game.compTurn();
+				});
+				$('#rightButton').one('click', function () {
+					if (question === 'X XOR O?') {
+						game.player = 'O';
+						game.comp = game.player === 'X' ? 'O' : 'X';
+					}
+					$('#rightButton').off('click');
+					$('#iconModal').modal('hide');
+					game.compTurn();
+				});
+			})();
+		} else {
+			setTimeout(function () {
 				game.compTurn();
-			});
-			$('#rightButton').one('click', function () {
-				if (question === 'X XOR O?') {
-					game.player = 'O';
-					game.comp = game.player === 'X' ? 'O' : 'X';
-				}
-				$('#rightButton').off('click');
-				$('#iconModal').modal('hide');
-				game.compTurn();
-			});
-		})();
+			}, 3000);
+		}
 	},
 
 	playerTurn: function playerTurn () {
@@ -206,15 +214,44 @@ var game = {
 		} else if (type === 'tie') {
 			console.log('from game.over, tie');
 		}
-		if ( window.confirm('Play again?') ) {
+		//if ( window.confirm('Play again?') ) {
 			game.init();
-		} else {
-			console.log('That is all.');
-		}
+		//} else {
+		//	console.log('That is all.');
+		//}
 	}
 
 }; // game object
 game.init();
+//
+//(function playAgain (question) {
+//	question = question || 'X XOR O?';
+//
+//	$('#iconModal').modal({show:true,
+//		backdrop:false,
+//		keyboard: false
+//	});
+//
+//	$('#question').html(question);
+//	$('#leftButton').one('click', function () {
+//		if (question === 'X XOR O?') {
+//			game.player = 'X';
+//			game.comp = game.player === 'X' ? 'O' : 'X';
+//		}
+//		$('#rightButton').off('click');
+//		$('#iconModal').modal('hide');
+//		game.compTurn();
+//	});
+//	$('#rightButton').one('click', function () {
+//		if (question === 'X XOR O?') {
+//			game.player = 'O';
+//			game.comp = game.player === 'X' ? 'O' : 'X';
+//		}
+//		$('#rightButton').off('click');
+//		$('#iconModal').modal('hide');
+//		game.compTurn();
+//	});
+//})();
 
 //Array.prototype.check = function(e) {
 //	return this.some(function(a) {
