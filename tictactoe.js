@@ -3,7 +3,11 @@
 //TODO. 3. Add easy, medium, and hard difficulty levels
 //TODO. 4. Can't see the moves at game end if modal pops up
 //TODO. 5. Draw a line through the winning combo
+//look up jquery to show hide elements
 
+//hide all ids by default
+// for each win combo show appropriate ID, then hide again
+//TODO. 6. Create a 'flash' function that takes an id name as input to flash the lines. Refactor.
 
 
 var game = {
@@ -167,41 +171,56 @@ var game = {
 		}
 		var check = makeCheck(moves);
 
+		function flash (element) {
+			var count = 0;
+			return (function recursion () {
+				return setTimeout(
+					function () {
+					$(element).toggle();
+					count++;
+					if (count === 6) {
+						return true;
+					} else {
+						return recursion();
+					}
+				}, 300);
+			}());
+		}
 		// win combo?
 		if (moves.length > 2) {
 			if (check(0)) {
 				if (check(1)) {
 					if (check(2)) {
-						return true;
+						 return flash('.top-horizontal');
 					}
 				}
 				if (check(3)) {
 					if (check(6)) {
-						return true;
+						return flash('.left-vertical');
 					}
 				}
 				if (check(4)) {
 					if (check(8)) {
-						return true;
+						return flash('.left-diagonal');
 					}
 				}
 			}
 			if (check(1) && check(4) && check(7)) {
-				return true;
+				return flash('.middle-vertical');
 			}
 			if (check(2)) {
 				if (check(4) && check(6)) {
-					return true;
+					return flash('.right-diagonal');
 				}
 				if (check(5) && check(8)) {
-					return true;
+					return flash('.right-vertical');
 				}
 			}
 			if (check(3) && check(4) && check(5)) {
-				return true;
+				return flash('.middle-horizontal');
 			}
 			if (check(6) && check(7) && check(8)) {
-				return true;
+				return flash('.bottom-horizontal');
 			}
 		}
 	},
@@ -223,38 +242,3 @@ var game = {
 
 }; // game object
 game.init();
-//
-//(function playAgain (question) {
-//	question = question || 'X XOR O?';
-//
-//	$('#iconModal').modal({show:true,
-//		backdrop:false,
-//		keyboard: false
-//	});
-//
-//	$('#question').html(question);
-//	$('#leftButton').one('click', function () {
-//		if (question === 'X XOR O?') {
-//			game.player = 'X';
-//			game.comp = game.player === 'X' ? 'O' : 'X';
-//		}
-//		$('#rightButton').off('click');
-//		$('#iconModal').modal('hide');
-//		game.compTurn();
-//	});
-//	$('#rightButton').one('click', function () {
-//		if (question === 'X XOR O?') {
-//			game.player = 'O';
-//			game.comp = game.player === 'X' ? 'O' : 'X';
-//		}
-//		$('#rightButton').off('click');
-//		$('#iconModal').modal('hide');
-//		game.compTurn();
-//	});
-//})();
-
-//Array.prototype.check = function(e) {
-//	return this.some(function(a) {
-//		return a === e;
-//	});
-//};

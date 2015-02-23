@@ -85,6 +85,7 @@ h2 {
     font-weight: 800;
 }
 hr.top-horizontal, hr.middle-horizontal, hr.bottom-horizontal {
+    display: none;
     top: 55px;
     width: 440px;
     border-top: 3px dotted rgba(255,238,238,0.75);
@@ -92,6 +93,7 @@ hr.top-horizontal, hr.middle-horizontal, hr.bottom-horizontal {
     position: absolute;
 }
 hr.left-vertical, hr.middle-vertical, hr.right-vertical {
+    display: none;
     -webkit-transform: rotate(-90deg);
     left: -143px;
     top: 209px;
@@ -101,6 +103,7 @@ hr.left-vertical, hr.middle-vertical, hr.right-vertical {
     position: absolute;
 }
 hr.left-diagonal {
+    display: none;
     -webkit-transform: rotate(-135deg);
     top: 55px;
     left: -225px;
@@ -110,6 +113,7 @@ hr.left-diagonal {
     position: absolute;
 }
 hr.right-diagonal {
+    display: none;
     -webkit-transform: rotate(-45deg);
     top: 56px;
     left: -227px;
