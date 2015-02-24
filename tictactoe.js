@@ -42,7 +42,11 @@ var game = {
 	],
 
 	init: function init () {
-		$('h2').remove();
+		if (game.gameNum > 0) {
+			setTimeout(function() {
+			$('h2').remove();
+			}, 2000)
+		}
 		game.gameNum++;
 
 		(function setBoard () {
@@ -118,6 +122,26 @@ var game = {
 	},
 
 	compTurn: function compTurn () {
+	//variables: corner, edge, center, block
+	//if first move
+		//move in center
+			//if player marks edge
+				//move in a corner on opposite side if haven't
+				//else if blocked, block their win
+					//comp wins this move
+			//if player marks corner
+				//move in corner across the middle (opposite corner)
+				//if player marks edge
+					//block their win or take a corner
+						//comp wins this move
+				//else block
+		//move in corner
+			//if player move in center
+				//
+			//else
+
+
+
 		var idx = Math.floor((Math.random() * game.freeMoves.length));
 		// draw letter to view
 		$(game.freeMoves[idx]).append('<h2>' + game.comp + '</h2>');
@@ -178,10 +202,11 @@ var game = {
 					function () {
 					$(element).toggle();
 					count++;
+						console.log(count);
 					if (count === 6) {
 						return true;
 					} else {
-						return recursion();
+						recursion();
 					}
 				}, 300);
 			}());
@@ -191,7 +216,7 @@ var game = {
 			if (check(0)) {
 				if (check(1)) {
 					if (check(2)) {
-						 return flash('.top-horizontal');
+						return flash('.top-horizontal');
 					}
 				}
 				if (check(3)) {
