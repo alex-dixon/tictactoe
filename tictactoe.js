@@ -1,14 +1,4 @@
-//TODO. 1. Modal instead of prompt for another game after game ends
-//TODO. 2. A tie logs 'game over' to the console but does not show a picture of a cat.
-//TODO. 3. Add easy, medium, and hard difficulty levels
-//TODO. 4. Can't see the moves at game end if modal pops up
-//TODO. 5. Draw a line through the winning combo
-//look up jquery to show hide elements
-
-//hide all ids by default
-// for each win combo show appropriate ID, then hide again
-//TODO. 6. Create a 'flash' function that takes an id name as input to flash the lines. Refactor.
-
+//TODO. 1. A tie logs 'game over' to the console but does not show a picture of a cat.
 
 var game = {
 
@@ -122,29 +112,115 @@ var game = {
 	},
 
 	compTurn: function compTurn () {
+
 	//variables: corner, edge, center, block
-	//if first move
-		//move in center
+		var center = game.board[4];
+
+		var corner = {
+			topleft: game.board[0],
+			topright: game.board[2],
+			bottomright: game.board[8],
+			bottomleft: game.board[6]
+		};
+
+		var edge = {
+			top: game.board[1],
+			right: game.board[5],
+			bottom: game.board[7],
+			left: game.board[3]
+		};
+
+		var top = [corner.topleft, edge.top, corner.topright];
+		var rightSide = [corner.topright, edge.right, corner.bottomright];
+		var bottom = [corner.bottomleft, edge.bottom, corner.bottomright];
+		var leftSide = [corner.topleft, edge.left, corner.bottomleft];
+
+		var moveNum = game.freeMoves.length - 8;
+
+		//draw move to view
+		function draw (id) {
+			$(id).append('<h2>' + game.comp + '</h2>');
+		}
+
+		//random 0 to num - 1
+		function random (num) {
+			return Math.floor((Math.random() * (num)));
+		}
+		// get a random property from object
+		var randomProperty = function (obj, random) {
+			var keys = Object.keys(obj);
+			return obj[keys[ random]];
+		};
+
+		function didPlayerMove (loc) {
+			var lastMove = game.prevMove.slice(1);
+			for (var key in loc) {
+				if (loc[key] === lastMove) {
+					console.log(loc[key]);
+					return true;
+				}
+			}
+			return false;
+		}
+
+		var rIdx;
+
+		//
+
+		if (moveNum === 1) {
+			if (random(2) === 0) {
+				draw(center);
+					//or if first move, move in corner
+
+				} else {
+					draw(randomProperty(corner, random(4)));
+				}
+			}
+
+			//} else if (moveNum === 1 && rIdx !== 0) {
+
+
+			// on second move if player marked edge on their first
+			//if (move === 3 && playerMoved(corner) )
+
 			//if player marks edge
-				//move in a corner on opposite side if haven't
-				//else if blocked, block their win
-					//comp wins this move
+			//move in a corner on opposite side if haven't
+			//else if blocked, block their win
+			//comp wins this move
 			//if player marks corner
-				//move in corner across the middle (opposite corner)
-				//if player marks edge
-					//block their win or take a corner
-						//comp wins this move
-				//else block
-		//move in corner
+			//move in corner across the middle (opposite corner)
+			//if player marks edge
+			//block their win or take a corner
+			//comp wins this move
+			//else block
+			//move in corner
 			//if player move in center
-				//
+			// move in corner across the middle
+			//if player move corner
+			//move corner & block win
+			//win
+			//if player move edge across middle
+			//move corner on same side as prev move
+			//if blocked
+			//move center
+			//win
+			//move
 			//else
+			//same row or column corner
+			//if blocked
+			//take corner
+			//win
+			//if first move
+			//move in center
+
+			//draw(corner[rIdx]);
+			//}
 
 
+			var idx = Math.floor((Math.random() * game.freeMoves.length));
 
-		var idx = Math.floor((Math.random() * game.freeMoves.length));
 		// draw letter to view
-		$(game.freeMoves[idx]).append('<h2>' + game.comp + '</h2>');
+		//$(game.freeMoves[idx]).append('<h2>' + game.comp + '</h2>');
 		// set prevMove to last move
 		game.prevMove = '#' + $(game.freeMoves[idx]).attr('id');
 		// remove lastMove from freeMoves
@@ -162,8 +238,8 @@ var game = {
 		} else {
 			game.playerTurn();
 		}
-	},
 
+	},
 	disableSpace: function disableSpace (lastMove, remaining) {
 		remaining = remaining || this.freeMoves;
 		for (var i = 0; i < remaining.length; i++) {
@@ -186,6 +262,8 @@ var game = {
 	},
 
 	checkWin: function checkWin (moves) {
+
+		//checks baked in array for an element
 		function makeCheck (moves) {
 			return function (input) {
 				return moves.some(function (element) {
@@ -258,11 +336,7 @@ var game = {
 		} else if (type === 'tie') {
 			console.log('from game.over, tie');
 		}
-		//if ( window.confirm('Play again?') ) {
 			game.init();
-		//} else {
-		//	console.log('That is all.');
-		//}
 	}
 
 }; // game object
