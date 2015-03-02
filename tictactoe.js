@@ -7,6 +7,7 @@ var game = {
 	comp: '',
 	prevMove: '',
 
+
 	board: [
 		'#top-left', 			//0
 		'#top-middle', 		//1
@@ -111,6 +112,7 @@ var game = {
 		});
 	},
 
+	compMoves: [],
 	compTurn: function compTurn () {
 
 	//variables: corner, edge, center, block
@@ -135,7 +137,7 @@ var game = {
 		var bottom = [corner.bottomleft, edge.bottom, corner.bottomright];
 		var leftSide = [corner.topleft, edge.left, corner.bottomleft];
 
-		var moveNum = game.freeMoves.length - 8;
+		var moveNum = 10 - game.freeMoves.length;
 
 		//draw move to view
 		function draw (id) {
@@ -146,14 +148,16 @@ var game = {
 		function random (num) {
 			return Math.floor((Math.random() * (num)));
 		}
+
 		// get a random property from object
-		var randomProperty = function (obj, random) {
+		function randomProperty (obj, random) {
 			var keys = Object.keys(obj);
 			return obj[keys[ random]];
-		};
+		}
 
+		// find category of square for last player move
 		function didPlayerMove (loc) {
-			var lastMove = game.prevMove.slice(1);
+			var lastMove = game.prevMove;
 			for (var key in loc) {
 				if (loc[key] === lastMove) {
 					console.log(loc[key]);
@@ -165,22 +169,21 @@ var game = {
 
 		var rIdx;
 
-		//
-
+		//first move
 		if (moveNum === 1) {
 			if (random(2) === 0) {
 				draw(center);
-					//or if first move, move in corner
-
-				} else {
-					draw(randomProperty(corner, random(4)));
-				}
+			} else {
+				draw(randomProperty(corner, random(4)));
 			}
+		}
+		if ( moveNum === 3 && didPlayerMove(edge) ) {
+			console.log('player chose edge')
+		}
 
 			//} else if (moveNum === 1 && rIdx !== 0) {
 
-
-			// on second move if player marked edge on their first
+			// on third move if player marked edge on second
 			//if (move === 3 && playerMoved(corner) )
 
 			//if player marks edge
@@ -221,15 +224,43 @@ var game = {
 
 		// draw letter to view
 		//$(game.freeMoves[idx]).append('<h2>' + game.comp + '</h2>');
-		// set prevMove to last move
-		game.prevMove = '#' + $(game.freeMoves[idx]).attr('id');
+
+		function getPrevMove () {
+			var icon = game.comp;
+			var oldMoves = game.compMoves || [];
+
+			function makeCheck (moves) {
+				return function (input) {
+					return moves.some(function (element) {
+						return element === input;
+					});
+				};
+			}
+			//checks baked in array for an element
+			var check = makeCheck(oldMoves);
+
+
+			//
+			function drawnInSquare (i) { return icon === $(game.board[i]).find('h2').text(); }
+
+			for (var i = 0; i < game.board.length; i++) {
+				if ( drawnInSquare(i) ) {
+					if ( !check(i) ) {
+						return game.board[i];
+					}
+				}
+			}
+		}
+		game.prevMove = getPrevMove();
+		//// set prevMove to last move
+		//game.prevMove = '#' + $(game.freeMoves[idx]).attr('id');
 		// remove lastMove from freeMoves
 		game.freeMoves = game.disableSpace(game.prevMove, game.freeMoves);
 		// get all comp moves to check if comp win
-		var compMarks = game.marks(game.comp);
-		if (compMarks.length > 0) {
+		var compMoves = game.marks(game.comp);
+		if (compMoves.length > 0) {
 			// check for comp win
-			var compWin = game.checkWin(compMarks);
+			var compWin = game.checkWin(compMoves);
 		}
 		if (compWin) {
 			game.over('computer wins');
@@ -263,7 +294,6 @@ var game = {
 
 	checkWin: function checkWin (moves) {
 
-		//checks baked in array for an element
 		function makeCheck (moves) {
 			return function (input) {
 				return moves.some(function (element) {
@@ -271,6 +301,7 @@ var game = {
 				});
 			};
 		}
+		//checks baked in array for an element
 		var check = makeCheck(moves);
 
 		function flash (element) {
