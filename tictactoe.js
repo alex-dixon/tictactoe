@@ -14,6 +14,8 @@ var game = {
 	compMoves: [],
 	playerEdgePath: '',
 	playerCornerPath: '',
+	playerCenterPath: '',
+	lastCompMoveId: '',
 
 
 
@@ -47,6 +49,8 @@ var game = {
 		game.compMoves = [];
 		game.playerEdgePath = '';
 		game.playerCornerPath = '';
+		game.playerCenterPath = '';
+		game.lastCompMoveId = '';
 
 		if (game.gameNum > 0) {
 			setTimeout(function() {
@@ -177,10 +181,14 @@ var game = {
 		// Test if player's last move is a particular category of move
 		function didPlayerMove (loc) {
 			var lastMove = game.prevMoveId;
-			for (var key in loc) {
-				if (loc[key] === lastMove) {
-					console.log('from didPlayerMove : ' + loc[key]);
-					return true;
+			if (typeof loc === 'string') {
+				return loc === lastMove;
+			} else {
+				for (var key in loc) {
+					if (loc[key] === lastMove) {
+						console.log('from didPlayerMove : ' + loc[key]);
+						return true;
+					}
 				}
 			}
 			return false;
@@ -214,6 +222,14 @@ var game = {
 					};
 				}
 				var check = makeCheck(game.marks(game.player));
+				function blank(i) {
+					if ('X' === $(game.board[i]).find('h2').text() ||
+						'O' === $(game.board[i]).find('h2').text()) {
+						return false;
+					} else {
+						return true;
+					}
+				}
 
 				var winCombos = [horizWin, vertWin, diagWin];
 
@@ -222,13 +238,19 @@ var game = {
 
 					for (var array in winnersObj) {
 
-						if ( check(winnersObj[array][0]) && check(winnersObj[array][1]) ) {
+						if ( check(winnersObj[array][0])
+							&& check(winnersObj[array][1])
+							&& blank(winnersObj[array][2])) {
 							return winnersObj[array][2];
 
-						} else if ( check(winnersObj[array][1]) && check(winnersObj[array][2]) ) {
+						} else if (check(winnersObj[array][1])
+										&& check(winnersObj[array][2])
+										&& blank(winnersObj[array][0])) {
 							return (winnersObj[array][0]);
 
-						} else if ( check(winnersObj[array][0]) && check(winnersObj[array][2])) {
+						} else if (check(winnersObj[array][0])
+										&& check(winnersObj[array][2]
+										&& blank(winnersObj[array][1]))) {
 							return winnersObj[array][1];
 						}
 					}
@@ -268,21 +290,25 @@ var game = {
 
 				for (var array in winnersObj) {
 
-					if ( checkComp(winnersObj[array][0])
+					if (checkComp(winnersObj[array][0])
 						&& checkComp(winnersObj[array][1])
 						&& checkPlayer(winnersObj[array][2]) ) {
+						console.log('didplayerblock returning true');
 							return true;
-					} else if ( checkComp(winnersObj[array][1])
+					} else if (checkComp(winnersObj[array][1])
 						&& checkComp(winnersObj[array][2])
 						&& checkPlayer(winnersObj[array][0]) ) {
-							return true;
+						console.log('didplayerblock returning true');
+								return true;
 					} else if ( checkComp(winnersObj[array][0])
 						&& checkComp(winnersObj[array][2])
 						&& checkPlayer(winnersObj[array][1]) ) {
-							return true;
+						console.log('didplayerblock returning true');
+						return true;
 					}
 				}
 			}
+			console.log('didplayerblock returning false');
 			return false;
 		}
 
@@ -412,19 +438,13 @@ var game = {
 			if (game.playerCornerPath) {
 
 				//Third comp move.
-					//Player can win? block
-				if (moveNum === 5 && didPlayerMove(edge)) {
-					if (typeof block() === 'number') {
-						var idx1 = block();
-						draw(game.board[idx1]);
-					} else if (typeof block() !== 'number') {
-						draw(game.freeMoves[random(game.freeMoves.length)]);
-					}
-				} else if (moveNum === 5) {
-					if (typeof block() === 'number') {
-						var idx3 = block();
-						draw(game.board[idx3]);
-					} else if (typeof block() !== 'number') {
+				// says block in all cases or do random. Fixing by reducing to standard
+				if (moveNum === 5) {
+					if (doWin() !== false) {
+						draw(doWin());
+					} else if (typeof block() === 'number') {
+						draw(game.board[block()]);
+					} else {
 						draw(game.freeMoves[random(game.freeMoves.length)]);
 					}
 				}
@@ -439,6 +459,8 @@ var game = {
 				} else if (moveNum === 7) {
 					if (doWin() !== false) {
 						draw(doWin());
+					} else if (typeof block() === 'number') {
+							draw(game.board[block()]);
 					} else if (doWin() === false) {
 						draw(game.freeMoves[random(game.freeMoves.length)]);
 					}
@@ -463,14 +485,144 @@ var game = {
 
 // CORNER PATH
 
-		//if ('corner' === game.path) {
-		//	if (moveNum === 3 && didPlayerMove(edge)) {
-		//
-		//	}
-		//}
+		if ('corner' === game.path) {
+
+			if (moveNum === 3 && didPlayerMove(center)) {
+				game.playerCenterPath = true;
+				(function moveDiagonalCorner() {
+					var firstMove = game.board[(game.marks(game.comp)[0])];
+					if (corner.topleft === firstMove) {
+						draw(corner.bottomright);
+					} else if (corner.topright === firstMove) {
+						draw(corner.bottomleft);
+					} else if (corner.bottomright === firstMove) {
+						draw(corner.topleft);
+					} else if (corner.bottomleft === firstMove) {
+						draw(corner.topright);
+					}
+				})();
+
+			} else if (moveNum === 3) {
+				game.playerCenterPath = false;
+				(function moveSameRowCorner() {
+					var firstComp = game.board[(game.marks(game.comp)[0])];
+					var firstPlayer = game.board[(game.marks(game.player)[0])];
+					if (corner.topleft === firstComp) {
+						corner.topright !== firstPlayer ? draw(corner.topright) : draw(corner.bottomleft);
+					} else if (corner.topright === firstComp) {
+						corner.topleft !== firstPlayer ? draw(corner.topleft) : draw(corner.bottomright);
+					} else if (corner.bottomright === firstComp) {
+						corner.bottomleft !== firstPlayer ? draw(corner.bottomleft) : draw(corner.topright);
+					} else if (corner.bottomleft === firstComp) {
+						corner.bottomright !== firstPlayer ? draw(corner.bottomright) : draw(corner.topleft);
+					}
+				})();
+			}
+
+// CENTER player move path
+			if (game.playerCenterPath) {
+
+				if (moveNum === 5) {
+
+					if (doWin() !== false) {
+						draw(doWin());
+						console.log('drawing win')
+					} else if (typeof block() === 'number') {
+						console.log('blocked');
+						draw(game.board[block()]);
+					} else {
+						draw(game.freeMoves[random(game.freeMoves.length)]);
+						console.log('drawing random')
+					}
+				}
+
+
+				if (moveNum === 7) {
+					if (doWin() !== false) {
+						draw(doWin());
+						console.log('drawing win')
+					} else if (typeof block() === 'number') {
+						console.log('blocked');
+						draw(game.board[block()]);
+					} else {
+						draw(game.freeMoves[random(game.freeMoves.length)]);
+						console.log('drawing random')
+					}
+				}
+
+				if (moveNum === 9) {
+					if (doWin() !== false) {
+						draw(doWin());
+					} else if (typeof block() === 'number') {
+						draw(game.board[block()]);
+					} else {
+						draw(game.freeMoves[random(game.freeMoves.length)]);
+					}
+				}
+
+			} // player center path
+
+// !CENTER player move path
+			if (!game.playerCenterPath) {
+
+				if (moveNum === 5) {
+
+					if (doWin() !== false) {
+						draw(doWin());
+					} else if (typeof block() === 'number') {
+						draw(game.board[block()]);
+					} else if ( didPlayerBlock() ) {
+						//move in corner opposite first comp move
+						(function () {
+							var lastComp = game.lastCompMoveId;
+							console.log('lastcomp is ' + lastComp);
+							if (corner.topleft === lastComp) {
+								draw(corner.bottomright);
+							} else if (corner.topright === lastComp) {
+								draw(corner.bottomleft);
+							} else if (corner.bottomright === lastComp) {
+								draw(corner.bottomleft);
+							} else if (corner.bottomleft === lastComp) {
+								draw(corner.topright);
+							}
+						})();
+					} else {
+						draw(game.freeMoves[random(game.freeMoves.length)]);
+					}
+				}
+
+				if (moveNum === 7) {
+					if (doWin() !== false) {
+						draw(doWin());
+					} else if (typeof block() === 'number') {
+						draw(game.board[block()]);
+					} else {
+						draw(game.freeMoves[random(game.freeMoves.length)]);
+					}
+				}
+
+				if (moveNum === 9) {
+					if (doWin() !== false) {
+						draw(doWin());
+					} else if (typeof block() === 'number') {
+						draw(game.board[block()]);
+					} else {
+						draw(game.freeMoves[random(game.freeMoves.length)]);
+					}
+				}
+
+
+			} // player !center path
+
+
+
+		} // corner path
 
 
 // END LOGIC
+
+
+
 
 		function getPrevMove () {
 			var prevMoves = game.compMoves;
@@ -496,6 +648,8 @@ var game = {
 
 		// set prevMoveId to last move
 		game.prevMoveId = getPrevMove();
+
+		game.lastCompMoveId = game.prevMoveId;
 
 		// remove lastMove from freeMoves
 		game.freeMoves = game.disableSpace(game.prevMoveId, game.freeMoves);

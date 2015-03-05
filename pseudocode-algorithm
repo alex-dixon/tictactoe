@@ -19,7 +19,7 @@
 						//move corner
 							//win
 					//if player move
-			//else
+			//else if player doesn't move in center
 				//same row or column corner
 				//if blocked
 					//take corner
