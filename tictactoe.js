@@ -214,17 +214,18 @@ var game = {
 				right: 	[2, 4, 6]
 			};
 
-			function makeCheck (moves) {
-				return function (input) {
-					return moves.some(function (element) {
-						return element === input;
-					});
-				};
-			}
-			//checks baked in array for an element
-			var check = makeCheck(game.marks(game.player));
-
+			// Get idx# to block player win
 			function block () {
+				// Player move index num === elem?
+				function makeCheck (moves) {
+					return function (input) {
+						return moves.some(function (element) {
+							return element === input;
+						});
+					};
+				}
+				var check = makeCheck(game.marks(game.player));
+
 				var winCombos = [horizWin, vertWin, diagWin];
 
 				for (var i = 0; i < winCombos.length; i++) {
@@ -246,9 +247,61 @@ var game = {
 				}
 			}
 
+		// Player blocked last move? Return true.
+		function didPlayerBlock () {
+			// player move index num === elem?
+			function makeCheck (moves) {
+				return function (input) {
+					return moves.some(function (element) {
+						return element === input;
+					});
+				};
+			}
+
+			function getIdxFromId (id) {
+				for (var i = 0; i < game.board.length; i++) {
+					if (id === game.board[i]) {
+						var array = [];
+						array.push(i);
+						return array;
+					}
+				}
+				return false;
+			}
+console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
+			var checkPlayer = makeCheck(getIdxFromId(game.prevMoveId));
+			console.log('checkPlayer is ' + checkPlayer);
+			//var checkPlayer = makeCheck(game.marks(game.player));
+			var checkComp = makeCheck(game.marks(game.comp));
+
+			var winCombos = [horizWin, vertWin, diagWin];
+
+			for (var i = 0; i < winCombos.length; i++) {
+				var winnersObj = winCombos[i];
+
+				for (var array in winnersObj) {
+
+					if ( checkComp(winnersObj[array][0])
+						&& checkComp(winnersObj[array][1])
+						&& checkPlayer(winnersObj[array][2]) ) {
+							return true;
+					} else if ( checkComp(winnersObj[array][1])
+						&& checkComp(winnersObj[array][2])
+						&& checkPlayer(winnersObj[array][0]) ) {
+							return true;
+					} else if ( checkComp(winnersObj[array][0])
+						&& checkComp(winnersObj[array][2])
+						&& checkPlayer(winnersObj[array][1]) ) {
+							return true;
+					}
+				}
+			}
+			return false;
+		}
 
 
 
+// PERFECT PLAY LOGIC ...
 		// First move and set path
 		if (moveNum === 1) {
 			if (random(2) === 0) {
@@ -259,10 +312,11 @@ var game = {
 				game.path = 'corner';
 			}
 		}
-//CENTER PATH
+
+// CENTER PATH
 		if ('center' === game.path) {
 
-// Second comp move. Player chose an edge? Move in an opposite corner
+	// Second comp move. Player chose an edge? Move in random opposite corner.
 			if (moveNum === 3 && didPlayerMove(edge)) {
 				(function moveOppositeCorner() {
 					var playerMoved = game.prevMoveId;
@@ -282,16 +336,22 @@ var game = {
 
 				})();
 			}
-// Third comp move.
 
-			if (moveNum === 5 && didPlayerMove(corner) ) {
+// Third comp move. Player blocked? Block them. Else mark win.
+			if (moveNum === 5 && didPlayerBlock() ) {
 				var idx = block();
 				draw(game.board[idx]);
 			// if player blocked win, do this
 				//if player did not block win, mark win
 			}
 
-		}
+// Fourth comp move. Mark win.
+			//if ( moveNum === 7 ) {
+			//
+			//}
+			//
+
+		} //center path
 
 
 
