@@ -1,16 +1,17 @@
 //if first move
-		//move in center
+		1//move in center
 			//if player marks edge
-				//move in a corner on opposite side
-				//else if blocked, block their win
-					//comp wins this move
+				3//move in a corner on opposite side
+				3//else if blocked, block their win
+					5//comp wins this move
 
 			//if player marks corner
-				//move in corner across the middle (opposite corner)
+				3//move in corner across the middle (opposite corner)
 				//if player marks edge
-					//block their win or take a corner
-						//comp wins this move
-				//else block
+					5//block their win or take a corner
+						5//comp wins this move
+				3//else block
+
 		//move in corner
 			//if player move in center
 				// move in corner across the middle
