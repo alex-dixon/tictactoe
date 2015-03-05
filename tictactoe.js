@@ -10,6 +10,8 @@ var game = {
 	player: '',
 	comp: '',
 	prevMoveId: '',
+	path: '',
+	compMoves: [],
 
 
 
@@ -38,6 +40,10 @@ var game = {
 	],
 
 	init: function init () {
+		game.prevMoveId = '';
+		game.path = '';
+		game.compMoves = [];
+
 		if (game.gameNum > 0) {
 			setTimeout(function() {
 			$('h2').remove();
@@ -117,8 +123,7 @@ var game = {
 		});
 	},
 
-	path: '',
-	compMoves: [],
+
 
 	compTurn: function compTurn () {
 
@@ -148,6 +153,9 @@ var game = {
 
 		//draw move to view
 		function draw (id) {
+			if (typeof id === "number") {
+				id = game.board[id];
+			}
 			$(id).append('<h2>' + game.comp + '</h2>');
 		}
 
@@ -268,10 +276,8 @@ var game = {
 				}
 				return false;
 			}
-console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
+
 			var checkPlayer = makeCheck(getIdxFromId(game.prevMoveId));
-			console.log('checkPlayer is ' + checkPlayer);
-			//var checkPlayer = makeCheck(game.marks(game.player));
 			var checkComp = makeCheck(game.marks(game.comp));
 
 			var winCombos = [horizWin, vertWin, diagWin];
@@ -299,6 +305,47 @@ console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
 			return false;
 		}
 
+		// Draws a win if possible
+		function doWin () {
+			// Comp move index num === elem?
+			function makeCheck(moves) {
+				return function (input) {
+					return moves.some(function (element) {
+						return element === input;
+					});
+				};
+			}
+			var check = makeCheck(game.marks(game.comp));
+			function blank(i) {
+				if ('X' === $(game.board[i]).find('h2').text() ||
+					'O' === $(game.board[i]).find('h2').text()) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+			var winCombos = [horizWin, vertWin, diagWin];
+			for (var i = 0; i < winCombos.length; i++) {
+				var winnersObj = winCombos[i];
+				for (var array in winnersObj) {
+					if (check(winnersObj[array][0]) &&
+							check(winnersObj[array][1]) &&
+							blank(winnersObj[array][2])) {
+						draw(winnersObj[array][2]);
+					} else if (check(winnersObj[array][1]) &&
+										 check(winnersObj[array][2]) &&
+										 blank(winnersObj[array][0])) {
+						draw(winnersObj[array][0]);
+					} else if (check(winnersObj[array][0])
+									&& check(winnersObj[array][2])
+									&& blank(winnersObj[array][1])) {
+						draw(winnersObj[array][1]);
+					}
+				}
+			}
+		}
+
+
 
 
 // PERFECT PLAY LOGIC ...
@@ -316,11 +363,12 @@ console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
 // CENTER PATH
 		if ('center' === game.path) {
 
-	// Second comp move. Player chose an edge? Move in random opposite corner.
+	// Second comp move.
+	//
+	// Player chose an edge? Move in random opposite corner.
 			if (moveNum === 3 && didPlayerMove(edge)) {
 				(function moveOppositeCorner() {
 					var playerMoved = game.prevMoveId;
-
 					if (edge.top === playerMoved) {
 						random(2) === 1 ? draw(bottom[0]) : draw(bottom[2]);
 					} else if (edge.right === playerMoved) {
@@ -333,7 +381,21 @@ console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
 						random(2) === 1 ?
 							draw(rightSide[0]) : draw(rightSide[2]);
 					}
+				})();
 
+				// Player moved corner? Move diagonal corner
+			} else if (moveNum === 3 && didPlayerMove(corner)) {
+				(function moveDiagonalCorner() {
+					var playerMoved = game.prevMoveId;
+					if (corner.topleft === playerMoved) {
+						draw(corner.bottomright);
+					} else if (corner.topright === playerMoved) {
+						draw(corner.bottomleft);
+					} else if (corner.bottomright === playerMoved) {
+						draw(corner.topleft);
+					} else if (corner.bottomleft === playerMoved) {
+						draw(corner.topright);
+					}
 				})();
 			}
 
@@ -341,15 +403,15 @@ console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
 			if (moveNum === 5 && didPlayerBlock() ) {
 				var idx = block();
 				draw(game.board[idx]);
-			// if player blocked win, do this
-				//if player did not block win, mark win
+			} else if (moveNum === 5) {
+				doWin();
 			}
 
 // Fourth comp move. Mark win.
-			//if ( moveNum === 7 ) {
-			//
-			//}
-			//
+			if ( moveNum === 7 ) {
+				doWin();
+			}
+
 
 		} //center path
 
@@ -364,7 +426,7 @@ console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
 
 
 		function getPrevMove () {
-			var previousMoves = game.compMoves;
+			var prevMoves = game.compMoves;
 			function makeCheck (moves) {
 				return function (input) {
 					return moves.some(function (element) {
@@ -372,19 +434,16 @@ console.log('right before checkPlayer prevMoveId is ' + game.prevMoveId);
 					});
 				};
 			}
-			var check = makeCheck(previousMoves);
+			var inPrevMoves = makeCheck(prevMoves);
 			var icon = game.comp;
 			//
 			function drawnInSquare (i) {
 				return icon === $(game.board[i]).find('h2').text();
 			}
 			for (var i = 0; i < game.board.length; i++) {
-				if ( drawnInSquare(i) && !check(i) ) {
-
+				if ( drawnInSquare(i) && !inPrevMoves(i) ) {
 						console.log('from get prev move: ' + game.board[i]);
-
 						return game.board[i];
-
 				}
 			}
 		}

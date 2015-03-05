@@ -4,6 +4,7 @@
 				//move in a corner on opposite side
 				//else if blocked, block their win
 					//comp wins this move
+
 			//if player marks corner
 				//move in corner across the middle (opposite corner)
 				//if player marks edge
