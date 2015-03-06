@@ -264,7 +264,7 @@ var game = {
 				};
 			}
 			var playerMoved = makeCheck(game.marks(game.player));
-			function blank(i) {
+			function blank (i) {
 				if ('X' === $(game.board[i]).find('h2').text() ||
 					'O' === $(game.board[i]).find('h2').text()) {
 					return false;
@@ -562,23 +562,26 @@ var game = {
 					} else if (typeof block() === 'number') {
 						console.log('block at move 5 because' + block());
 						draw(game.board[block()]);
-					} else if ( didPlayerBlock() ) {
+					} else if ( didPlayerBlock() || typeof block() !== 'number') {
 						console.log('playerBlocked from move 5');
 						var lastComp = game.lastCompMoveId;
 						console.log('lastcomp is from move 5 ' + lastComp);
-						//if player moved top edge,
-						//if player moved right edge,
-						//if player moved bottom edge,
-						//if player moved left edge,
-
+						function blank (id) {
+							if ('X' === $(id).find('h2').text() ||
+									'O' === $(id).find('h2').text()) {
+								return false;
+							} else {
+								return true;
+							}
+						}
 						if (corner.topleft === lastComp) {
-							draw(corner.bottomright);
+							blank(corner.bottomright) ? draw(corner.bottomright) : draw(center);
 						} else if (corner.topright === lastComp) {
-							draw(corner.bottomleft);
+							blank(corner.bottomleft) ? draw(corner.bottomleft) : draw(center);
 						} else if (corner.bottomright === lastComp) {
-							draw(corner.topleft);
+							blank(corner.topleft) ? draw(corner.topleft) : draw(center);
 						} else if (corner.bottomleft === lastComp) {
-							draw(corner.topright);
+							blank(corner.topright) ? draw(corner.topright) : draw(center);
 						}
 					} else {
 						console.log('random at move 5 because' + block() + doWin());
