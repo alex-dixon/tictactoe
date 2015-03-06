@@ -211,51 +211,9 @@ var game = {
 				right: 	[2, 4, 6]
 			};
 
-			//// Get idx# to block player win
-			//function block () {
-			//	function makeCheck (moves) {
-			//		return function (input) {
-			//			return moves.some(function (element) {
-			//				return element === input;
-			//			});
-			//		};
-			//	}
-			//	var checkPlayer = makeCheck(game.marks(game.player));
-			//	var checkComp = makeCheck(game.marks(game.comp));
-			//	function blank(i) {
-			//		if (i !== checkPlayer(i) && i !== checkComp(i)) {
-			//			return true;
-			//		} else {
-			//			return false;
-			//		}
-			//	}
-			//	var winCombos = [horizWin, vertWin, diagWin];
-			//	for (var i = 0; i < winCombos.length; i++) {
-			//		var winnersObj = winCombos[i];
-			//		for (var array in winnersObj) {
-			//			if ( checkPlayer(winnersObj[array][0])
-			//				&& checkPlayer(winnersObj[array][1])
-			//				&& blank(winnersObj[array][2])) {
-			//				console.log('ifel 1, list ' + winnersObj[array] + 'elem = ' + winnersObj[array][2]);
-			//				return winnersObj[array][2];
-			//			} else if (checkPlayer(winnersObj[array][1])
-			//							&& checkPlayer(winnersObj[array][2])
-			//							&& blank(winnersObj[array][0])) {
-			//				console.log('ifel 2, list ' + winnersObj[array] + 'elem = ' + winnersObj[array][0]);
-			//				return winnersObj[array][0];
-			//			} else if (checkPlayer(winnersObj[array][0])
-			//							&& checkPlayer(winnersObj[array][2])
-			//							&& blank(winnersObj[array][1])) {
-			//				console.log('ifel 3, list ' + winnersObj[array] + 'elem = ' + winnersObj[array][1]);
-			//				return winnersObj[array][1];
-			//			}
-			//		}
-			//	}
-			//}
 
-		// COPY OF MARK WIN...REPLACING BLOCK
 		function block () {
-			// Comp move index num === elem?
+			// player move index num === elem?
 			function makeCheck(moves) {
 				return function (input) {
 					return moves.some(function (element) {
@@ -562,6 +520,23 @@ var game = {
 					} else if (typeof block() === 'number') {
 						console.log('block at move 5 because' + block());
 						draw(game.board[block()]);
+					} else if (didPlayerBlock() === false) {
+            var firstCompId = (function () {
+              var array = game.marks(game.comp);
+              var ids = array.map(function (e) {
+                return game.board[e];
+              });
+              return ids[0] !== game.lastCompMoveId ? ids[0] : ids[1];
+            })();
+						if (corner.topleft === firstCompId) {
+							blank(corner.bottomright) ? draw(corner.bottomright) : draw(center);
+						} else if (corner.topright === firstCompId) {
+							blank(corner.bottomleft) ? draw(corner.bottomleft) : draw(center);
+						} else if (corner.bottomright === firstCompId) {
+							blank(corner.topleft) ? draw(corner.topleft) : draw(center);
+						} else if (corner.bottomleft === firstCompId) {
+							blank(corner.topright) ? draw(corner.topright) : draw(center);
+						}
 					} else if ( didPlayerBlock() || typeof block() !== 'number') {
 						console.log('playerBlocked from move 5');
 						var lastComp = game.lastCompMoveId;
@@ -574,6 +549,7 @@ var game = {
 								return true;
 							}
 						}
+						//
 						if (corner.topleft === lastComp) {
 							blank(corner.bottomright) ? draw(corner.bottomright) : draw(center);
 						} else if (corner.topright === lastComp) {
